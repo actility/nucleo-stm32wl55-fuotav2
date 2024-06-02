@@ -24,9 +24,11 @@ Description: FOTA Firmware Patching Support
  * patch chunk is moved to SWAP region to avoid overlapping.
  *
  * \param len Length of total patch binary received (including header and signature trailer)
+ * \param ram_buf Pointer to the buffer in RAM for patch uncompression, should match flash page size
+ * \param ram_buf_sz Size of ram_buf uncompression buffer
  * \retval Result of patch unpacking. See fota_patch_result_t type definition in fota_patch_defs.h
  */
-fota_patch_result_t fota_patch(uint32_t len);
+fota_patch_result_t fota_patch(uint32_t len, uint8_t *ram_buf, uint32_t ram_buf_sz);
 
 /**
  * \brief Verify patch magic to decide if binary just received could

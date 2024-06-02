@@ -40,6 +40,12 @@
 /* External variables ---------------------------------------------------------*/
 /* USER CODE BEGIN EV */
 
+/**
+ * RAM buffer for page uncompression. Should match flash page size.
+ * Should match flash page size specified in FOTA server device profile.
+ */
+uint8_t ram_buf[FLASH_PAGE_SIZE];
+
 /* USER CODE END EV */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -239,7 +245,7 @@ void FRAG_DECODER_IF_OnDone(int32_t status, uint32_t size, uint32_t *addr)
     if( fota_patch_verify_signature (datafile, size - SFU_IMG_IMAGE_OFFSET) == SMARTDELTA_OK ) {
 #endif
       APP_LOG(TS_OFF, VLEVEL_M, "Patch size: %u\r\n", size);
-      fota_patch_result_t patch_res = fota_patch(size);
+      fota_patch_result_t patch_res = fota_patch(size, ram_buf, FLASH_IF_Page_Size());
       if (patch_res == fotaOk) {
         LmhpFirmwareManagementSetImageStatus(FW_MANAGEMENT_VALID_IMAGE);
         APP_LOG(TS_OFF, VLEVEL_M, "\r\n...... Smart Delta to Flash Succeeded  ......\r\n");

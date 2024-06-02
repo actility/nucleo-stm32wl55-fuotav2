@@ -19,14 +19,6 @@ Description: FOTA storage handling
 
 /* Exported constants --------------------------------------------------------*/
 
-/*
- * Size of buffer storage used in patch as uncompress buffer
- * and temporary storage to keep contents of rewritten
- * flash page. Should no less then MCU flash page size
- * and match compression ratio in patch processing
- */
-#define RAM_STORAGE_SZ   		4096
-
 #define NEWIMAGE_BUF_SIZE       512     /* Size of temporary NEWIMAGE write buffer to provide 64 bit alignment, multiple of FLASH_ALIGN ! */
 #define SMARTDELTA_MAC_LEN      72      /* Size of Smart Delta crypto signature (including padding) */
 #define TMP_READBUF_SIZE		512		/* Size of buffer to temporary store content of external flash before write it back */
@@ -99,15 +91,6 @@ int32_t fota_storage_read(uint8_t *data, uint32_t size, storage_status_t *error)
   * \retval status Read operation status [-1 Fail (error contains code), 0 Success]
   */
 int32_t fota_storage_init(uint32_t size, storage_status_t *error);
-
-/**
-  * Allocate RAM buffer for use during patch processing
-  *
-  * \param [OUT] ram_buf pointer where to write ram buffer start pointer
-  *
-  * \retval size Size of RAM buffer returned or 0 on failure
-  */
-uint32_t fota_storage_get_rambuf(uint8_t **ram_buf);
 
 /**
   * Virtually write one byte to the flash. As all writes should be aligned
